@@ -1,0 +1,41 @@
+// --------------- DATA
+
+user {
+	id			// User ID
+	email		// User email address
+	password	// User passowrd (plaintext lol)
+	name		// Full name
+	darktheme	// Dark theme (bool)
+	rules // ?
+}
+
+todo {	
+	id 				// Todo ID
+	title			// Title of the todo
+	description		// todo description / content
+	startdate		// start date. defaults to date added
+	enddate
+	status			// 1: red, 2: orange, 3: green
+	creatorid
+	assigneeid		// `userid` of person assigned to the todo item. 
+}
+
+
+// --------------- REQ
+GET /todo
+{
+	"email": email,						(req)
+	"assigneeemail": assigneeid,		(opt)
+	"creatoremail": creatoremail		(opt)
+}
+
+PUT /todo
+{
+	"email": email,						(req)
+	"title": title,						(req, string)
+	"description": description,			(opt, string)
+	"startdate": startdate,				(opt, string "YYYY/MM/DD HH:MM:SS")
+	"enddate": enddate,					(opt, string "YYYY/MM/DD HH:MM:SS")
+	"status": status,					(opt, int 1, 2, 3 (red, yellow, green))
+	"assigneeemail": assigneeemail		(opt)
+}
