@@ -2,9 +2,9 @@ var express = require("express");
 var db = require("./db.js");
 
 module.exports.get = function(req, res) {
-	var userid = req.query.userid;
+	var email = req.query.email;
 
-	db.getUser(userid, function(err, user) {
+	db.getUser(email, function(err, user) {
 		if (err) {
 			return res.json({success:false, "err":err});
 		}

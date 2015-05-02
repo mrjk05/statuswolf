@@ -5,6 +5,7 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 var auth = require("./auth.js");
+var user = require("./user.js");
 var todo = require("./todo.js");
 
 function validateSessidGET(req, res, callback) {

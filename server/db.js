@@ -3,6 +3,7 @@ var conn = new cps.Connection('tcp://cloud-us-0.clusterpoint.com:9007', 'statusw
 var uuid = require('node-uuid');
 var utils = require('./utils.js');
 var j2xml = require('js2xmlparser');
+var notification = require('./notification.js');
 
 // Todos
 module.exports.getTodos = function(assigneeemail, creatoremail, callback) {
@@ -47,6 +48,12 @@ module.exports.addTodo = function(todo, callback) {
 	// Default assignee to creator
 	if (!todo.assigneeemail) todo.assigneeemail = todo.creatoremail;
 	
+	// Send notification to assignee if it's not the creator
+	if (todo.assigneeemail != todo.creatoremail) {
+		console.log("sending assignee email");
+		notification.send([todo.assigneeemail], "New Assignment", "Hi,<br />You've been wolfed. Go to your dashboard to see your assignments.<br />Regards,<br />The Wolfmaster");
+	}
+	
 	conn.sendRequest(new cps.InsertRequest([todo]), function (err, res) {
 		if (err) {
 			console.error(err);
@@ -73,6 +80,7 @@ module.exports.getUser = function(email, callback) {
 	conn.sendRequest(searchReq, function (err, searchRes) {
 		if (err) return callback(err);
 	
+		console.log(searchRes.results.document);
 		callback(null, searchRes.results.document[0]);
 	});
 }
