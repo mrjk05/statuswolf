@@ -1,0 +1,18 @@
+body {
+    color: white;
+    background-color: black;
+}
+
+#menu-bar {
+    padding-top: .6em;
+    background-color: #351D1D;
+    border-bottom: 4px solid rgba(193, 65, 65, 0.31);
+}
+
+#menu-bar button {
+    margin-top: .5em;
+}
+
+.status {
+    background-color: #222;
+}

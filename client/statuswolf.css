@@ -1,9 +1,9 @@
 body {
-    font-family: Futura, "HelveticaNeue-UltraLight", "Helvetica Neue UltraLight", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 300;
+    font-family: sans-serif;
+    font-weight: 100;
 
-    color: white;
-    background-color: black;
+    color: #E9706E;
+    background-color: #EAEDF1;
 }
 
 #packery {
@@ -12,7 +12,7 @@ body {
 }
 
 #logotype:hover {
-    background-position: 100% 0;
+    background-position: 25% 0;
 }
 
 #logotype {
@@ -20,7 +20,7 @@ body {
     display: inline-block;
     height: 12rem;
     width: 11.9rem;
-    margin: 3rem 4rem 0 5rem;
+    margin: 0 4rem 0 2rem;
     text-indent: -999em;
     background-image: url('StatusWolf_Logo_Combined.png');
     background-size: cover;
@@ -29,12 +29,26 @@ body {
 #menu-bar {
     white-space: nowrap;
     float: right;
-    padding-top: 1.3em;
+    padding-top: 0.6em;
+    width: 100%;
+    background-color: #E9706E;
+    border-bottom: 4px solid #C14141;
 }
 
 #menu-bar button {
     margin-right: .2em;
+    border: 1px solid white;
+    border-radius: 0;
+    background: none;
+    float: right;
+    margin-top: 0.5em;
 }
+
+#menu-bar button:hover {
+  border: none;
+  background-color: #CC4040;
+}
+
 
 button:focus {
     /* Disable default blue outline */
@@ -57,11 +71,11 @@ button {
 }
 
 #new-status {
-    padding: .25em 0em .7em;
+    padding: .25em 0 .7em;
 }
 
 #settings img {
-    margin-top: 0.25em;
+    margin-top: .25em;
 }
 
 .status:before, .status h3 {
@@ -74,11 +88,12 @@ button {
 }
 
 .status {
-    width: 35rem;
+    width: 36rem;
     height: 9rem;
 
     font-size: 1.5em;
-    background-color: #222;
+    background-color: white;
+    border-bottom: 2px solid;
 
     box-sizing: border-box;
     margin: .05em;
@@ -94,7 +109,7 @@ button {
 
 .status h3 {
     display: inline-block;
-    width: 25rem;
+    width: 26rem;
     /*line-height: 4.3em;*/
 }
 
@@ -105,7 +120,8 @@ button {
 }
 
 .traffic-light {
-    font-size: 9rem;
+    font-size: 10rem;
+    line-height: 104px;
 }
 
 .green {
@@ -119,3 +135,4 @@ button {
 .red {
     color: red;
 }
+
