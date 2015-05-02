@@ -1,0 +1,121 @@
+body {
+    font-family: Futura, "HelveticaNeue-UltraLight", "Helvetica Neue UltraLight", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+
+    color: white;
+    background-color: black;
+}
+
+#packery {
+    width: 100%;
+    height: 100%;
+}
+
+#logotype:hover {
+    background-position: 100% 0;
+}
+
+#logotype {
+    font-size: 1em;
+    display: inline-block;
+    height: 12rem;
+    width: 11.9rem;
+    margin: 3rem 4rem 0 5rem;
+    text-indent: -999em;
+    background-image: url('StatusWolf_Logo_Combined.png');
+    background-size: cover;
+}
+
+#menu-bar {
+    white-space: nowrap;
+    float: right;
+    padding-top: 1.3em;
+}
+
+#menu-bar button {
+    margin-right: .2em;
+}
+
+button:focus {
+    /* Disable default blue outline */
+    outline: none;
+}
+
+button {
+    /* So they don't both move when you click one */
+    vertical-align: top;
+
+    font-size: 3.5em;
+    color: white;
+
+    width: 2.7em;
+    height: 1.8em;
+
+    background-color: #767676;
+    border: 0 rgba(0,0,0,0);
+    border-radius: .2em;
+}
+
+#new-status {
+    padding: .25em 0em .7em;
+}
+
+#settings img {
+    margin-top: 0.25em;
+}
+
+.status:before, .status h3 {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.status:before {
+    content: "";
+}
+
+.status {
+    width: 35rem;
+    height: 9rem;
+
+    font-size: 1.5em;
+    background-color: #222;
+
+    box-sizing: border-box;
+    margin: .05em;
+    padding: .5em 1em;
+
+    cursor: pointer;
+}
+
+.expanded-status {
+    width: 100%;
+    background-color: #5C5A4F; /* TODO: This is too close to the menu button's gray */
+}
+
+.status h3 {
+    display: inline-block;
+    width: 25rem;
+    /*line-height: 4.3em;*/
+}
+
+.indicator {
+    float: right;
+    margin-left: 1.2rem;
+    /*line-height: 0.75;*/
+}
+
+.traffic-light {
+    font-size: 9rem;
+}
+
+.green {
+    color: #37B019;
+}
+
+.yellow {
+    color: #FFDF0F;
+}
+
+.red {
+    color: red;
+}
