@@ -78,7 +78,7 @@ var initPackery = function() {
     // TODO: Save layouts between sessions. See https://github.com/metafizzy/packery/issues/19
 };
 
-var insertStatuses = function(resp) {
+var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
     var pretendTemplate = 
         "<div class='status'> \
             <div class='valign-wrapper'> \
@@ -89,12 +89,15 @@ var insertStatuses = function(resp) {
             <span class='indicator traffic-light {{statusColour}}'> \
                 &#9679; <!-- BLACK CIRCLE: ● -- > \
             </span> \
+            <div id='status-description'>{{description}}</div> \
         </div>",
     container = $("#packery");
 
     if (!resp.success) alert('Could not fetch statuses');
     // TODO: Obviously we should handle this case eventually
     if (resp.todos.length === 0) alert('Not statuses returned');
+
+    var statusesToAdd = [];
 
     resp.todos.forEach(function(cStatus) {
         var colour;
@@ -112,10 +115,16 @@ var insertStatuses = function(resp) {
                 break;
         }
 
-        container.append(
-                pretendTemplate.replace("{{statusName}}", cStatus.title)
-                .replace("{{statusColour}}", colour));
+        statusesToAdd.push(
+                $(pretendTemplate.replace("{{statusName}}", cStatus.title)
+                    .replace("{{statusColour}}", colour))[0]);
     });
+
+    prepend ?
+        container.prepend(statusesToAdd) :
+        container.append(statusesToAdd);
+
+    return statusesToAdd;
 };
 
 var fetchStatuses = function() {
@@ -168,18 +177,38 @@ var closeAddMenu = function() {
 
 var initNewStatusForm = function() {
     $("#newTaskCreateButton").click(function() {
+        var creatoremail = document.cookie.split("=")[1],
+            title = $("#newTaskTitle").val(),
+            description = $("#new-task-description").val(),
+            startdate = $('input[name=newTaskStartDate]').val(),
+            enddate = $('input[name=newTaskEndDate]').val(),
+            status = 3,
+            assigneeemail = $('input[name=newTaskAssignee]').val();
+
         $.ajax({
             url: encodeURI(apiEndpoint +
-                "?creatoremail=" + document.cookie.split("=")[1] + 
-                "&title=" + $("#newTaskTitle").val() +
-                "&description=" + $("#new-task-description").val() +
-                "&startdate=" + $('input[name=newTaskStartDate]').val() +
-                "&enddate=" + $('input[name=newTaskEndDate]').val() + 
-                "&status=" + 3 +
-                "&assigneeemail=" + $('input[name=newTaskAssignee]').val()),
+                "?creatoremail=" + creatoremail + 
+                "&title=" + title +
+                "&description=" + description +
+                "&startdate=" + startdate +
+                "&enddate=" + enddate + 
+                "&status=" + status +
+                "&assigneeemail=" + assigneeemail),
             type: "PUT",
             success: function(resp) {
-                alert(1);
+                closeAddMenu();
+                var inserted =
+                    insertStatuses({
+                        success: true,
+                        todos: [{
+                            title: title,
+                            status: status
+                        }]
+                    }, null, null, true);
+
+                $("#packery").packery("prepended", inserted);
+                var draggie = new Draggabilly(inserted[0]);
+                $("#packery").packery('bindDraggabillyEvents', draggie);
             }
         });
     });
