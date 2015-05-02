@@ -131,6 +131,15 @@ button {
     height: 5em !important;
 }
 
+.status-description, .status-startdate, .status-enddate, .status-creatoremail, .status-assigneeemail {
+    border: 1px solid red;
+    display: none;
+}
+
+.expanded-status .status-description, .expanded-status .status-startdate, .expanded-status .status-enddate, .expanded-status .status-creatoremail, .expanded-status .status-assigneeemail {
+    display: block;
+}
+
 .status .valign-wrapper {
     display: table;
     height: 100%;

@@ -2,6 +2,7 @@
     "use strict";
 
 var apiEndpoint = 'http://192.168.6.66:8086/todo';
+var idsSeen = [];
 
 var initPackery = function() {
     var packeryContainer = $('#packery'),
@@ -86,20 +87,26 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
                     {{statusName}} \
                 </h3> \
             </div> \
+            <div class='status-description'>{{description}}</div> \
+            <div class='status-startdate'>{{startdate}}</div> \
+            <div class='status-enddate'>{{enddate}}</div> \
+            <div class='status-creatoremail'>{{creatoremail}}</div> \
+            <div class='status-assigneeemail'>{{assigneeemail}}</div> \
             <span class='indicator traffic-light {{statusColour}}'> \
                 &#9679; <!-- BLACK CIRCLE: ● -- > \
             </span> \
-            <div id='status-description'>{{description}}</div> \
         </div>",
     container = $("#packery");
 
     if (!resp.success) alert('Could not fetch statuses');
     // TODO: Obviously we should handle this case eventually
-    if (resp.todos.length === 0) alert('Not statuses returned');
+    if (resp.todos.length === 0) alert('No statuses returned');
 
     var statusesToAdd = [];
 
     resp.todos.forEach(function(cStatus) {
+        if (idsSeen.indexOf(cStatus.id) !== -1) return;
+
         var colour;
 
         switch (cStatus.status) {
@@ -115,9 +122,17 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
                 break;
         }
 
+        idsSeen.push(cStatus.id);
+
         statusesToAdd.push(
                 $(pretendTemplate.replace("{{statusName}}", cStatus.title)
-                    .replace("{{statusColour}}", colour))[0]);
+                    .replace("{{statusColour}}", colour)
+                    .replace("{{description}}", cStatus.description === undefined ? "" : cStatus.description)
+                    .replace("{{startdate}}", cStatus.startdate === undefined ? "" : cStatus.startdate)
+                    .replace("{{enddate}}", cStatus.enddate === undefined ? "" : cStatus.enddate)
+                    .replace("{{creatoremail}}", cStatus.creatoremail === undefined ? "" : cStatus.creatoremail)
+                    .replace("{{assigneeemail}}", cStatus.assigneeemail === undefined ? "" : cStatus.assigneeemail)
+                    )[0]);
     });
 
     prepend ?
