@@ -7,8 +7,7 @@ body {
 }
 
 #packery {
-    width: 100%;
-    height: 100%;
+    margin-left: 2%;
 }
 
 #logotype:hover {
@@ -28,7 +27,6 @@ body {
 
 #menu-bar {
     white-space: nowrap;
-    float: right;
     padding-top: 0.6em;
     width: 100%;
     background-color: #E9706E;
@@ -78,17 +76,10 @@ button {
     margin-top: .25em;
 }
 
-.status:before, .status h3 {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.status:before {
-    content: "";
-}
-
 .status {
-    width: 36rem;
+    /*width: 36rem;*/
+    width: 48%;
+    min-width: 36rem;
     height: 9rem;
 
     font-size: 1.5em;
@@ -97,31 +88,41 @@ button {
 
     box-sizing: border-box;
     margin: .05em;
-    padding: .5em 1em;
+    padding: .5rem 1rem;
 
     cursor: pointer;
 }
 
 .expanded-status {
-    width: 100%;
+    margin-right: 5%;
+    width: 95%; /* TODO: Make this 100% at some point */
+    height: 12em;
     background-color: #5C5A4F; /* TODO: This is too close to the menu button's gray */
 }
 
+.status .valign-wrapper {
+    display: table;
+    height: 100%;
+}
+
 .status h3 {
-    display: inline-block;
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+
     width: 26rem;
     /*line-height: 4.3em;*/
 }
 
 .indicator {
-    float: right;
-    margin-left: 1.2rem;
-    /*line-height: 0.75;*/
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 1;
 }
 
 .traffic-light {
     font-size: 10rem;
-    line-height: 104px;
 }
 
 .green {
@@ -136,3 +137,41 @@ button {
     color: red;
 }
 
+@media (max-width: 1100px) {
+    .status {
+        width: 96% !important;
+    }
+
+    .status .valign-wrapper, .status h3 {
+        width: 90%;
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 1100px) and (max-device-width: 720px) {
+    body {
+        font-size: 1.5em;
+    }
+
+    #menu-bar button {
+        margin-top: 0.2em;
+    }
+}
+
+@media (max-width: 1100px) and (max-device-width: 720px) and (orientation: portrait) {
+    body {
+        font-size: 2em;
+    }
+
+    #menu-bar {
+        font-size: 0.7em;
+    }
+
+    #menu-bar button {
+        border-width: 2px;
+    }
+
+    .status {
+        height: 13.5rem;
+    }
+}

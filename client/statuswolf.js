@@ -2,27 +2,33 @@
     "use strict";
 
 var initPackery = function() {
-    var packeryContainer = $('#packery');
+    var packeryContainer = $('#packery'),
+    opts = {
+        itemSelector: ".status",
+        //stamp: "#menu-bar, #logotype",
+        rowHeight: ".status",
+        gutter: 15,
+        //transitionDuration: 4000,
+        isLayoutInstant: false
+    };
 
     packeryContainer.imagesLoaded(function() {
-        packeryContainer.packery({
-            itemSelector: ".status",
-            stamp: "#menu-bar, #logotype",
-            rowHeight: ".status",
-            gutter: 15,
-            //transitionDuration: 4000,
-            isLayoutInstant: false
-        });
+        packeryContainer.packery(opts);
 
         // TODO: Statuses should move as far to the left as they can after being
         //       dropped, rather than staying still
         // TODO: You shouldn't be able to drag expanded statuses
 
         // Make statuses draggable
-        packeryContainer.find('.status').each(function(i, itemElem) {
-            var draggie = new Draggabilly(itemElem);
-            packeryContainer.packery('bindDraggabillyEvents', draggie);
-        });
+        var mq = window.matchMedia("(handheld)");
+        // TODO: This stops you clicking to expand on mobile
+        if (!('ontouchstart' in document.documentElement)
+                && !mq.matches) {
+            packeryContainer.find('.status').each(function(i, itemElem) {
+                var draggie = new Draggabilly(itemElem);
+                packeryContainer.packery('bindDraggabillyEvents', draggie);
+            });
+        }
     });
 
     // Expand statuses when clicked
@@ -63,9 +69,11 @@ var fetchStatuses = function() {
         success: function(resp) {
             var pretendTemplate = 
                     "<div class='status'> \
-                        <h3> \
-                            {{statusName}} \
-                        </h3> \
+                        <div class='valign-wrapper'> \
+                            <h3> \
+                                {{statusName}} \
+                            </h3> \
+                        </div> \
                         <span class='indicator traffic-light {{statusColour}}'> \
                             &#9679; <!-- BLACK CIRCLE: ● -- > \
                         </span> \
@@ -73,6 +81,8 @@ var fetchStatuses = function() {
                 container = $("#packery");
 
             if (!resp.success) alert('Could not fetch statuses');
+            // TODO: Obviously we should handle this case eventually
+            if (resp.todos.length === 0) alert('Not statuses returned');
 
             resp.todos.forEach(function(cStatus) {
                 var colour;
@@ -94,13 +104,37 @@ var fetchStatuses = function() {
                         pretendTemplate.replace("{{statusName}}", cStatus.title)
                             .replace("{{statusColour}}", colour));
             });
+
+            //initPackery();
+        }
+    });
+};
+
+var showRandomColourfulWolfOnHover = function() {
+    var wolfLogo = $("#logotype");
+
+    wolfLogo.on({
+        mouseenter: function() {
+            var positions = ["25%", "50%", "75%", "100%"],
+                wolfIdx = Math.floor(Math.random() * positions.length);
+
+            wolfLogo.css("background-position", positions[wolfIdx]);
+        },
+        mouseleave: function() {
+            $("#logotype").css("background-position", "0");
         }
     });
 };
 
 $(document).ready(function() {
+    // Temp hack for testing
+    $('.status').each(function() {
+        $(this).html("<div class='valign-wrapper'>" + $(this).html() + "</div>");
+    });
+
     fetchStatuses();
-    initPackery();
+    //initPackery();
+    showRandomColourfulWolfOnHover();
 });
 
 })();
