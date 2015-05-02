@@ -79,6 +79,10 @@ var initPackery = function() {
 var fetchStatuses = function() {
     $.ajax({
         url: 'http://192.168.6.66:8086/todo',
+        data: {
+            "creatoremail": document.cookie.split("=")[1],
+            "assigneeemail": document.cookie.split("=")[1],
+        },
         success: function(resp) {
             var pretendTemplate = 
                     "<div class='status'> \
@@ -118,7 +122,7 @@ var fetchStatuses = function() {
                             .replace("{{statusColour}}", colour));
             });
 
-            //initPackery();
+            initPackery();
         }
     });
 };
@@ -180,8 +184,8 @@ $(document).ready(function() {
         $(this).html("<div class='valign-wrapper'>" + $(this).html() + "</div>");
     });
 
-    //fetchStatuses();
-    initPackery();
+    fetchStatuses();
+    //initPackery();
     showRandomColourfulWolfOnHover();
     initNewStatusForm();
 });

@@ -1,3 +1,8 @@
+@font-face {
+    font-family: HelveticaNeueUltraLight;
+    src: url('HelveticaNeue-UltraLight.ttf');
+}
+
 * {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -8,7 +13,7 @@ body {
     padding: 0;
     margin: 0;
 
-    font-family: sans-serif;
+    font-family: /*HelveticaNeueUltraLight,*/ sans-serif;
     font-weight: 100;
 
     color: #E9706E;
@@ -167,24 +172,26 @@ button {
 
 .FormHeader {
     text-transform: uppercase;
+
     width: 100%;
+    height: 50px;
+
     margin: 0px;
     background-color: #CC4040;
+
+    padding: 18px 0px 0 15px;
+    color: white;
+    background-color: #CC4040;
+
+    font-size: 1.1em;
+    font-weight: 100;
 }
 
 #add-menu {
     position: absolute;
     visibility: hidden;
     z-index: 10;
-}
 
-.smalldot {
-    background: #5EDD60;
-    border-radius: 100%;
-    float: right;
-    display: inline-block;
-}
-div#add-menu {
     background-color: white;
     border: 1px solid #CC4040;
     right: 182px;
@@ -192,12 +199,19 @@ div#add-menu {
     width: 520px;
 }
 
-.FormHeader {
-    height: 50px;
-    padding: 18px 0px 0 15px;
-    color: white;
-    background-color: #CC4040;
-    font-weight: 100;
+#add-menu {
+    font-size: 1.2em;
+}
+
+#add-menu input, #add-menu textarea {
+    font-size: 0.9em;
+}
+
+.smalldot {
+    background: #5EDD60;
+    border-radius: 100%;
+    float: right;
+    display: inline-block;
 }
 
 .FormStuff {
@@ -222,6 +236,13 @@ div#add-menu {
 
 .Create {
     text-align: center;
+}
+
+#new-task-description {
+    width: 100%;
+    max-width: 100%;
+    height: 100px;
+    max-height: 100px;
 }
 
 .AddAssignee button {

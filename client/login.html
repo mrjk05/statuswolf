@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>StatusWolf Login</title>
+
+        <script>
+            function createEmailCookie() {
+                document.cookie = "email=" + document.getElementById("email").value
+            }
+        </script>
+    </head>
+    <body>
+        <form action="index.html" action="GET">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" />
+            <button onclick="createEmailCookie()">Login</button>
+        </form>
+    </body>
+</html>
