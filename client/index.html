@@ -29,7 +29,7 @@
             </div>
 
             <div class="FormStuff">
-                <input type="text" placeholder="Title" name="newTaskTitle" style="width:100%; margin-bottom:15px; height:25px;" />
+                <input type="text" placeholder="Title" id="newTaskTitle" style="width:100%; margin-bottom:15px; height:25px;" />
                 <br />
                 <textarea placeholder="Description" name="newTaskDescription" id="new-task-description"></textarea>
                 <table width="100%">
@@ -49,7 +49,8 @@
                         <td>
                             <input type="text" placeholder="Assignee" name="newTaskAssignee" style="height:25px;" />
                             <div class="AddAssignee">
-                                <button name="newTaskAddAssigneeButton">+</button>
+                                <button id="newTaskAddAssigneeButton"
+                                        name="newTaskAddAssigneeButton">+</button>
                             </div>
                         </td>
                     </tr>
@@ -58,7 +59,7 @@
                 <hr style="width: 95%;"/>
                 <br />
                 <div class="Create">
-                    <button name="newTaskAddAssigneeButton">Create</button>
+                    <button id="newTaskCreateButton">Create</button>
                 </div>
             </div>
         </div>

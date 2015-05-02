@@ -1,6 +1,8 @@
 (function(){
     "use strict";
 
+var apiEndpoint = 'http://192.168.6.66:8086/todo';
+
 var initPackery = function() {
     var packeryContainer = $('#packery'),
         opts = {
@@ -76,52 +78,62 @@ var initPackery = function() {
     // TODO: Save layouts between sessions. See https://github.com/metafizzy/packery/issues/19
 };
 
+var insertStatuses = function(resp) {
+    var pretendTemplate = 
+        "<div class='status'> \
+            <div class='valign-wrapper'> \
+                <h3> \
+                    {{statusName}} \
+                </h3> \
+            </div> \
+            <span class='indicator traffic-light {{statusColour}}'> \
+                &#9679; <!-- BLACK CIRCLE: ● -- > \
+            </span> \
+        </div>",
+    container = $("#packery");
+
+    if (!resp.success) alert('Could not fetch statuses');
+    // TODO: Obviously we should handle this case eventually
+    if (resp.todos.length === 0) alert('Not statuses returned');
+
+    resp.todos.forEach(function(cStatus) {
+        var colour;
+
+        switch (cStatus.status) {
+            case "1":
+                colour = "red";
+                break;
+            case "2":
+                colour = "yellow";
+                break;
+            case "3":
+            case undefined:
+                colour = "green";
+                break;
+        }
+
+        container.append(
+                pretendTemplate.replace("{{statusName}}", cStatus.title)
+                .replace("{{statusColour}}", colour));
+    });
+};
+
 var fetchStatuses = function() {
     $.ajax({
-        url: 'http://192.168.6.66:8086/todo',
+        url: apiEndpoint,
         data: {
             "creatoremail": document.cookie.split("=")[1],
+        },
+        success: insertStatuses
+    });
+
+    $.ajax({
+        url: apiEndpoint,
+        data: {
             "assigneeemail": document.cookie.split("=")[1],
         },
         success: function(resp) {
-            var pretendTemplate = 
-                    "<div class='status'> \
-                        <div class='valign-wrapper'> \
-                            <h3> \
-                                {{statusName}} \
-                            </h3> \
-                        </div> \
-                        <span class='indicator traffic-light {{statusColour}}'> \
-                            &#9679; <!-- BLACK CIRCLE: ● -- > \
-                        </span> \
-                    </div>",
-                container = $("#packery");
-
-            if (!resp.success) alert('Could not fetch statuses');
-            // TODO: Obviously we should handle this case eventually
-            if (resp.todos.length === 0) alert('Not statuses returned');
-
-            resp.todos.forEach(function(cStatus) {
-                var colour;
-
-                switch (cStatus.status) {
-                    case "1":
-                        colour = "red";
-                        break;
-                    case "2":
-                        colour = "yellow";
-                        break;
-                    case "3":
-                    case undefined:
-                        colour = "green";
-                        break;
-                }
-
-                container.append(
-                        pretendTemplate.replace("{{statusName}}", cStatus.title)
-                            .replace("{{statusColour}}", colour));
-            });
-
+            insertStatuses(resp);
             initPackery();
         }
     });
@@ -155,6 +167,23 @@ var closeAddMenu = function() {
 }
 
 var initNewStatusForm = function() {
+    $("#newTaskCreateButton").click(function() {
+        $.ajax({
+            url: encodeURI(apiEndpoint +
+                "?creatoremail=" + document.cookie.split("=")[1] + 
+                "&title=" + $("#newTaskTitle").val() +
+                "&description=" + $("#new-task-description").val() +
+                "&startdate=" + $('input[name=newTaskStartDate]').val() +
+                "&enddate=" + $('input[name=newTaskEndDate]').val() + 
+                "&status=" + 3 +
+                "&assigneeemail=" + $('input[name=newTaskAssignee]').val()),
+            type: "PUT",
+            success: function(resp) {
+                alert(1);
+            }
+        });
+    });
+
     $('#new-status').click(function() {
         var menuShadow = document.getElementsByName("menu-shadow")[0];
         if (menuShadow) menuShadow.style.visibility = "visible";
