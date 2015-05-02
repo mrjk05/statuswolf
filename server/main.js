@@ -1,8 +1,10 @@
 var express = require("express");
 var bodyParser = require('body-parser')
+var cors = require("cors");
 var app = express();
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(cors());
 
 var auth = require("./auth.js");
 var user = require("./user.js");
@@ -40,6 +42,8 @@ function validateSessid(sessid, req, res, callback) {
 // user
 app.get("/user", function(req, res) {
 	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+	
 	validateSessidGET(req, res, function(req, res) {
 		user.get(req, res);
 	});	
@@ -68,18 +72,24 @@ app.get("/login", function(req, res) {
 // todo
 app.get("/todo", function(req, res) {
 	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+	
 	validateSessidGET(req, res, function(req, res) {
 		todo.get(req, res);
 	});
 });
 app.put("/todo", function(req, res) {
 	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+	
 	validateSessidPUT(req, res, function(req, res) {
 		todo.put(req, res);
 	});
 });
 app.post("/todo", function(req, res) {
 	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+	
 	validateSessidPUT(req, res, function(req, res) {
 		todo.post(req, res);
 	});

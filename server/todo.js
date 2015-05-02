@@ -44,6 +44,8 @@ module.exports.put = function(req, res) {
 	if (req.query.status) todo.status = req.query.status;
 	if (req.query.assigneeemail) todo.assigneeemail = req.query.assigneeemail;
 	
+	console.log(req.query);
+	
 	db.addTodo(todo, function(err) {
 		if (err) {
 			res.json({success:false, "err":err});

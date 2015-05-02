@@ -24,7 +24,6 @@ todo {
 // --------------- REQ
 GET /todo
 {
-	"email": email,						(req)
 	"assigneeemail": assigneeid,		(opt)
 	"creatoremail": creatoremail		(opt)
 }
@@ -39,3 +38,10 @@ PUT /todo
 	"status": status,					(opt, int 1, 2, 3 (red, yellow, green))
 	"assigneeemail": assigneeemail		(opt)
 }
+
+GET /user
+{
+	"email"								(req)
+}
+
+GET /user

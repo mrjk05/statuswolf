@@ -51,7 +51,12 @@ module.exports.addTodo = function(todo, callback) {
 	// Send notification to assignee if it's not the creator
 	if (todo.assigneeemail != todo.creatoremail) {
 		console.log("sending assignee email");
-		notification.send([todo.assigneeemail], "New Assignment", "Hi,<br />You've been wolfed. Go to your dashboard to see your assignments.<br />Regards,<br />The Wolfmaster");
+		var taskdetails = "Title: " + todo.title + "<br />";
+		if (todo.description) taskdetails += "Description: " + todo.description + "<br />";
+		if (todo.startdate) taskdetails += "Start Date: " + todo.startdate + "<br />";
+		if (todo.enddate) taskdetails += "End Date: " + todo.enddate + "<br />";
+		var message = "Hi,<br /><br />You have been assigned a new task by " + todo.creatoremail + ".<br /><br />-- Task Details --<br />" + taskdetails + "<br /><br />Thanks,<br />The Wolfmaster"
+		notification.send([todo.assigneeemail], "New Assignment", message);
 	}
 	
 	conn.sendRequest(new cps.InsertRequest([todo]), function (err, res) {
@@ -79,8 +84,14 @@ module.exports.getUser = function(email, callback) {
 	var searchReq = new cps.SearchRequest(cps.Term(email, "email"));
 	conn.sendRequest(searchReq, function (err, searchRes) {
 		if (err) return callback(err);
-	
-		console.log(searchRes.results.document);
-		callback(null, searchRes.results.document[0]);
+		callback(null, {success:true, "user": searchRes.results.document[0]});
+	});
+}
+
+module.exports.getUsers = function(callback) {
+	var searchReq = new cps.SearchRequest(cps.Term("user", "type"));
+	conn.sendRequest(searchReq, function (err, searchRes) {
+		if (err) return callback(err);
+		callback(null, {success:true, "users": searchRes.results.document});
 	});
 }
