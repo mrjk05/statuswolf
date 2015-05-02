@@ -50,10 +50,11 @@ var initPackery = function() {
 
         clickedStatus.toggleClass('expanded-status');
 
-        if (!clickedStatus.hasClass('expanded-status')) {
-            // Trigger layout when shrinking
+        if (!clickedStatus.hasClass('expanded-status') || isTouchDevice) {
+            // Trigger layout when shrinking (and always on mobile)
             packeryContainer.packery();
         } else {
+            // Trigger layout and fit when expanding
             packeryContainer.packery('fit', event.target);
         }
     };
@@ -64,7 +65,14 @@ var initPackery = function() {
         packeryContainer.on('staticClick', expandStatuses);
     }
 
-    // TODO: Topmost statuses expand over the menu bar
+    // Fix up spacing after you rotate your phone
+    window.addEventListener('orientationchange', function() {
+        // Make sure the rotation has happened before we trigger layout
+        setTimeout(function() {
+            packeryContainer.packery();
+        }, 200);
+    });
+
     // TODO: Save layouts between sessions. See https://github.com/metafizzy/packery/issues/19
 };
 
