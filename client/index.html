@@ -23,6 +23,47 @@
     </head>
 
     <body role="application">
+
+        <div id="add-menu">
+            <div class="FormHeader">
+                Add New Task
+            </div>
+
+            <div class="FormStuff">
+                <input type="text" placeholder="Title" name="newTaskTitle" style="width:100%; margin-bottom:15px; height:25px;" />
+                <br />
+                <textarea placeholder="Description" name="newTaskDescription" style="width:100%; max-width:100%; height: 100px; max-height: 100px;" ></textarea>
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <input type="date" name="newTaskStartDate" style="height:25px;" />
+                        </td>
+                        <td>
+                            <font color="#000">Status</font> <font color="#5EDD60">On Track</font>
+                            <div class="smalldot" style="width:35px; height:35px;" ></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="date" name="newTaskEndDate" style="height:25px;" />
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Assignee" name="newTaskAssignee" style="height:25px;" />
+                            <div class="AddAssignee">
+                                <button name="newTaskAddAssigneeButton">+</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <hr style="width: 95%;"/>
+                <br />
+                <div class="Create">
+                    <button name="newTaskAddAssigneeButton">Create</button>
+                </div>
+            </div>
+        </div>
+
         <div id="menu-bar">
             <h1 id="logotype">
                 StatusWolf

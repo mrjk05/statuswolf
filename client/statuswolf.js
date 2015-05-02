@@ -139,6 +139,41 @@ var showRandomColourfulWolfOnHover = function() {
     });
 };
 
+var closeAddMenu = function() {
+    var menuShadow = document.getElementsByName("menu-shadow")[0];
+    if (menuShadow) menuShadow.style.visibility = "hidden";
+
+    var addMenu = $('#add-menu')[0];
+    var addMenuButton = $('#new-status')[0];
+    addMenuButton.style.background = "none";
+    addMenuButton.style.border = "1px solid White";
+    addMenu.style.visibility = "hidden";
+}
+
+var initNewStatusForm = function() {
+    $('#new-status').click(function() {
+        var menuShadow = document.getElementsByName("menu-shadow")[0];
+        if (menuShadow) menuShadow.style.visibility = "visible";
+
+        var addMenu = $('#add-menu')[0];
+        var addMenuButton = $('#new-status')[0];
+        addMenuButton.style.backgroundColor = "#CC4040";
+        addMenuButton.style.border = "1px solid #CC4040";
+        addMenu.position = "fixed";
+        addMenu.top = addMenuButton.offsetTop + addMenuButton.offsetHeight;
+        addMenu.left = 0;
+        addMenu.right = 0;
+        addMenu.bottom = 0;
+        addMenu.style.visibility = "visible";
+    });
+
+    $(document).on("click", function() {
+        if(!$(event.target).closest('#add-menu, #new-status').length) {
+            closeAddMenu();
+        }
+    });
+};    
+
 $(document).ready(function() {
     // Temp hack for testing
     $('.status').each(function() {
@@ -148,6 +183,7 @@ $(document).ready(function() {
     //fetchStatuses();
     initPackery();
     showRandomColourfulWolfOnHover();
+    initNewStatusForm();
 });
 
 })();

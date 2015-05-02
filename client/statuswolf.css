@@ -1,9 +1,30 @@
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
 body {
+    padding: 0;
+    margin: 0;
+
     font-family: sans-serif;
     font-weight: 100;
 
     color: #E9706E;
     background-color: #EAEDF1;
+}
+
+h3 {
+    color: #E9706E;
+    font-weight: 100;
+    padding-left: 20px;
+    text-transform: uppercase;
+    font-size: 1em;
+}
+
+p {
+    color: #000;
 }
 
 #packery {
@@ -28,6 +49,7 @@ body {
 #menu-bar {
     white-space: nowrap;
     padding-top: 0.6em;
+    margin-bottom: 1em;
     width: 100%;
     background-color: #E9706E;
     border-bottom: 4px solid #C14141;
@@ -40,11 +62,12 @@ body {
     background: none;
     float: right;
     margin-top: 0.5em;
+    cursor: pointer;
 }
 
 #menu-bar button:hover {
-  border: none;
-  background-color: #CC4040;
+    border: none !important;
+    background-color: #CC4040 !important;
 }
 
 
@@ -84,7 +107,7 @@ button {
 
     font-size: 1.5em;
     background-color: white;
-    border-bottom: 2px solid;
+    border-bottom: 2px solid #E9706E;
 
     box-sizing: border-box;
     margin: .05em;
@@ -95,9 +118,8 @@ button {
 
 .expanded-status {
     margin-right: 5%;
-    width: 98%; /* TODO: Make this 100% at some point */
+    width: 98%;
     height: 12em;
-    background-color: #5C5A4F; /* TODO: This is too close to the menu button's gray */
 }
 
 .expanded-status .valign-wrapper, .expanded-status h3 {
@@ -138,12 +160,104 @@ button {
 }
 
 .red {
-    color: red;
+    color: #E5234D;
+}
+
+/* ----- Add New Status Form ----- */
+
+.FormHeader {
+    text-transform: uppercase;
+    width: 100%;
+    margin: 0px;
+    background-color: #CC4040;
+}
+
+#add-menu {
+    position: absolute;
+    visibility: hidden;
+    z-index: 10;
+}
+
+.smalldot {
+    background: #5EDD60;
+    border-radius: 100%;
+    float: right;
+    display: inline-block;
+}
+div#add-menu {
+    background-color: white;
+    border: 1px solid #CC4040;
+    right: 182px;
+    top: 145px;
+    width: 520px;
+}
+
+.FormHeader {
+    height: 50px;
+    padding: 18px 0px 0 15px;
+    color: white;
+    background-color: #CC4040;
+    font-weight: 100;
+}
+
+.FormStuff {
+    padding: 15px;
+}
+
+.Create button {
+    background-color: #E9706E;
+    border-radius: 0px;
+    width: 180px;
+    height: 50px;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 100;
+    margin: 20px;
+}
+
+.Create button:hover {
+    background-color:#CC4040;
+    cursor:pointer;
+}
+
+.Create {
+    text-align: center;
+}
+
+.AddAssignee button {
+    border-radius: 0px;
+    height: 48px;
+    width: 69px;
+    background-color: #CC4040;
+    font-size: 18px;
+}
+
+.AddAssignee button:hover {
+    background-color:#E9706E;
+    cursor:pointer;
+}
+
+.FormStuff input[type="text"], .FormStuff input[type="date"] {
+    -webkit-appearance: none !important;
+    border: 1px solid #999;
+}
+
+.FormStuff textarea {
+    margin-bottom: 15px;
+}
+
+.AddAssignee {
+    display: inline-block;
 }
 
 @media (min-width: 1710px) {
-    .status {
-        width: 32% !important;
+    #packery .status {
+        width: 30% !important;
+        min-width: 0 !important;
+    }
+
+    .expanded-status {
+        width: 100% !important;
     }
 
     .status .valign-wrapper, .status h3 {
@@ -174,7 +288,11 @@ button {
     }
 
     .expanded-status {
-        height: 20rem !important;
+        height: 40rem !important;
+    }
+
+    .expanded-status .valign-wrapper, .expanded-status h3 {
+        height: 10rem !important;
     }
 }
 
