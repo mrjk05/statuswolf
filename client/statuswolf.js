@@ -3,14 +3,16 @@
 
 var initPackery = function() {
     var packeryContainer = $('#packery'),
-    opts = {
-        itemSelector: ".status",
-        //stamp: "#menu-bar, #logotype",
-        rowHeight: ".status",
-        gutter: 15,
-        //transitionDuration: 4000,
-        isLayoutInstant: false
-    };
+        opts = {
+            itemSelector: ".status",
+            //stamp: "#menu-bar, #logotype",
+            rowHeight: ".status",
+            gutter: 15,
+            //transitionDuration: 4000,
+            isLayoutInstant: false
+        },
+        mq = window.matchMedia("(handheld)"),
+        isTouchDevice = ('ontouchstart' in document.documentElement) || mq.matches;
 
     packeryContainer.imagesLoaded(function() {
         packeryContainer.packery(opts);
@@ -20,10 +22,7 @@ var initPackery = function() {
         // TODO: You shouldn't be able to drag expanded statuses
 
         // Make statuses draggable
-        var mq = window.matchMedia("(handheld)");
-        // TODO: This stops you clicking to expand on mobile
-        if (!('ontouchstart' in document.documentElement)
-                && !mq.matches) {
+        if (!isTouchDevice) {
             packeryContainer.find('.status').each(function(i, itemElem) {
                 var draggie = new Draggabilly(itemElem);
                 packeryContainer.packery('bindDraggabillyEvents', draggie);
@@ -32,7 +31,7 @@ var initPackery = function() {
     });
 
     // Expand statuses when clicked
-    packeryContainer.on('staticClick', function(event, pointer) {
+    var expandStatuses = function(event, pointer) {
         var clickedStatus = $(event.target).closest('.status');
 
         // Don't proceed if item wasn't clicked on
@@ -57,7 +56,13 @@ var initPackery = function() {
         } else {
             packeryContainer.packery('fit', event.target);
         }
-    });
+    };
+
+    if (isTouchDevice) {
+        packeryContainer.on('click', expandStatuses);
+    } else {
+        packeryContainer.on('staticClick', expandStatuses);
+    }
 
     // TODO: Topmost statuses expand over the menu bar
     // TODO: Save layouts between sessions. See https://github.com/metafizzy/packery/issues/19
@@ -132,8 +137,8 @@ $(document).ready(function() {
         $(this).html("<div class='valign-wrapper'>" + $(this).html() + "</div>");
     });
 
-    fetchStatuses();
-    //initPackery();
+    //fetchStatuses();
+    initPackery();
     showRandomColourfulWolfOnHover();
 });
 
