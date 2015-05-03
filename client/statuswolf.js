@@ -1,7 +1,38 @@
-(function(){
-    "use strict";
 
 var apiEndpoint = 'http://192.168.6.66:8086/todo';
+
+function indicatorClicked(el) {
+	var statusID = el.nextSibling.nextSibling.value;
+	
+	var green = el.className.indexOf("green") != -1;
+	var yellow = el.className.indexOf("yellow") != -1;
+	
+	var statusValue;
+	if (green) {
+		el.className = "indicator traffic-light yellow";
+		statusValue = 2;
+	} else if (yellow) {
+		el.className = "indicator traffic-light red";
+		statusValue = 1;
+	} else {	
+		el.className = "indicator traffic-light green";
+		statusValue = 3;
+	}
+	
+	$.ajax({
+            type:"POST",
+            url:apiEndpoint,
+            data: {
+                id:statusID,
+                status:statusValue
+            },
+            success: function(){}
+        });
+}
+
+(function(){
+    "use strict";
+	
 var idsSeen = [];
 
 var initPackery = function() {
@@ -35,7 +66,10 @@ var initPackery = function() {
 
     // Expand statuses when clicked
     var expandStatuses = function(event, pointer) {
+		if ($(event.originalEvent.target).hasClass("indicator")) return;
+		
         var clickedStatus = $(event.target).closest('.status');
+		console.log(event);
 
         // Don't proceed if item wasn't clicked on
         if (clickedStatus.length === 0) {
@@ -92,9 +126,10 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
             <div class='subfield status-enddate'>{{enddate}}</div> \
             <div class='status-emails'>{{creatoremail}} \
             {{assigneeemail}}</div> \
-            <span class='indicator traffic-light {{statusColour}}'> \
-                &#9679; <!-- BLACK CIRCLE: ● -- > \
+            <span class='indicator traffic-light {{statusColour}}' onclick='indicatorClicked(this);'> \
+                &#9679; <!-- BLACK CIRCLE: ● --> \
             </span> \
+			<input type='hidden' value='{{statusID}}' /> \
         </div>",
     container = $("#packery");
 
@@ -102,11 +137,11 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
     // TODO: Obviously we should handle this case eventually
     if (resp.todos.length === 0) alert('No statuses returned');
 
-    var statusesToAdd = [];
-
+	var statusesToAdd = [];
+    
     resp.todos.forEach(function(cStatus) {
-        if (idsSeen.indexOf(cStatus.id) !== -1) return;
-
+		if (idsSeen.indexOf(cStatus.id) !== -1) return;
+		
         var colour;
 
         switch (cStatus.status) {
@@ -122,11 +157,10 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
                 break;
         }
 
-        idsSeen.push(cStatus.id);
-
         statusesToAdd.push(
                 $(pretendTemplate.replace("{{statusName}}", cStatus.title)
                     .replace("{{statusColour}}", colour)
+                    .replace("{{statusID}}", cStatus.id)
                     .replace("{{description}}", cStatus.description === undefined ? "" : cStatus.description)
                     .replace("{{startdate}}", cStatus.startdate === undefined ? "" : new Date(cStatus.startdate).toDateString())
                     .replace("{{enddate}}", cStatus.enddate === undefined ? "" : (cStatus.startdate === undefined ? "Ends " : " - ") + new Date(cStatus.enddate).toDateString())
@@ -137,7 +171,7 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
                             ? "" : "<div class='subfield status-assigneeemail'>" + cStatus.assigneeemail + "</div>")
                     )[0]);
     });
-
+                    
     prepend ?
         container.prepend(statusesToAdd) :
         container.append(statusesToAdd);
@@ -202,7 +236,7 @@ var initNewStatusForm = function() {
             enddate = $('input[name=newTaskEndDate]').val(),
             status = 3,
             assigneeemail = $('input[name=newTaskAssignee]').val();
-
+            
         $.ajax({
             url: encodeURI(apiEndpoint +
                 "?creatoremail=" + creatoremail + 
