@@ -131,12 +131,42 @@ button {
     height: 5em !important;
 }
 
-.status-description, .status-startdate, .status-enddate, .status-creatoremail, .status-assigneeemail {
-    border: 1px solid red;
+.subfield {
     display: none;
+    /*color: #ccc;*/
+    color: #999;
+    font-size: 16px;
+    line-height: 24px;
+    padding-bottom: 7px;
+    margin-left: 1.1em;Only has an end date
+    margin-right: 1.1em;
 }
 
-.expanded-status .status-description, .expanded-status .status-startdate, .expanded-status .status-enddate, .expanded-status .status-creatoremail, .expanded-status .status-assigneeemail {
+.status-emails {
+    float: right;
+    text-align: right;
+    display: inline-block;
+}
+
+.status-enddate {
+    margin-left: 0;
+}
+
+.expanded-status .status-startdate, .expanded-status .status-enddate { 
+    display: inline !important;
+}
+
+.status-creatoremail::before { 
+    content: "Creator: ";
+    font-weight:700;
+}
+
+.status-assigneeemail::before { 
+    content: "Assignee: ";
+    font-weight:700;
+}
+
+.expanded-status .subfield {
     display: block;
 }
 
@@ -324,6 +354,11 @@ button {
     .expanded-status .valign-wrapper, .expanded-status h3 {
         height: 10rem !important;
     }
+
+    .status-description, .status-startdate, .status-enddate, .status-creatoremail, .status-assigneeemail {
+        font-size:0.9em;
+        line-height:1em;
+    }
 }
 
 @media (max-width: 1210px) and (max-device-width: 720px) and (orientation: portrait) {
@@ -345,5 +380,10 @@ button {
 
     .traffic-light {
         font-size: 13.5rem;
+    }
+
+    .status-description, .status-startdate, .status-enddate, .status-creatoremail, .status-assigneeemail {
+        font-size:0.9em;
+        line-height:1em;
     }
 }

@@ -87,11 +87,11 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
                     {{statusName}} \
                 </h3> \
             </div> \
-            <div class='status-description'>{{description}}</div> \
-            <div class='status-startdate'>{{startdate}}</div> \
-            <div class='status-enddate'>{{enddate}}</div> \
-            <div class='status-creatoremail'>{{creatoremail}}</div> \
-            <div class='status-assigneeemail'>{{assigneeemail}}</div> \
+            <div class='subfield status-description'>{{description}}</div> \
+            <div class='subfield status-startdate'>{{startdate}}</div> \
+            <div class='subfield status-enddate'>{{enddate}}</div> \
+            <div class='status-emails'>{{creatoremail}} \
+            {{assigneeemail}}</div> \
             <span class='indicator traffic-light {{statusColour}}'> \
                 &#9679; <!-- BLACK CIRCLE: ● -- > \
             </span> \
@@ -128,10 +128,13 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
                 $(pretendTemplate.replace("{{statusName}}", cStatus.title)
                     .replace("{{statusColour}}", colour)
                     .replace("{{description}}", cStatus.description === undefined ? "" : cStatus.description)
-                    .replace("{{startdate}}", cStatus.startdate === undefined ? "" : cStatus.startdate)
-                    .replace("{{enddate}}", cStatus.enddate === undefined ? "" : cStatus.enddate)
-                    .replace("{{creatoremail}}", cStatus.creatoremail === undefined ? "" : cStatus.creatoremail)
-                    .replace("{{assigneeemail}}", cStatus.assigneeemail === undefined ? "" : cStatus.assigneeemail)
+                    .replace("{{startdate}}", cStatus.startdate === undefined ? "" : new Date(cStatus.startdate).toDateString())
+                    .replace("{{enddate}}", cStatus.enddate === undefined ? "" : (cStatus.startdate === undefined ? "Ends " : " - ") + new Date(cStatus.enddate).toDateString())
+                    .replace("{{creatoremail}}", cStatus.creatoremail === undefined ? "" : "<div class='subfield status-creatoremail'>" + cStatus.creatoremail + "</div>")
+                    .replace("{{assigneeemail}}",
+                        cStatus.assigneeemail === undefined
+                            || cStatus.assigneeemail == cStatus.creatoremail
+                            ? "" : "<div class='subfield status-assigneeemail'>" + cStatus.assigneeemail + "</div>")
                     )[0]);
     });
 
@@ -216,8 +219,13 @@ var initNewStatusForm = function() {
                     insertStatuses({
                         success: true,
                         todos: [{
-                            title: title,
-                            status: status
+                            title: title == "" ? undefined : title,
+                            status: status == "" ? undefined : status,
+                            description: description == "" ? undefined : description,
+                            startdate: startdate == "" ? undefined : startdate,
+                            enddate: enddate == "" ? undefined : enddate,
+                            creatoremail: creatoremail == "" ? undefined : creatoremail,
+                            assigneeemail: assigneeemail == "" ? undefined : assigneeemail
                         }]
                     }, null, null, true);
 
