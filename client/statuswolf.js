@@ -1,5 +1,5 @@
-
-var apiEndpoint = 'http://192.168.6.66:8086/todo';
+var apiEndpoint = 'http://192.168.6.113:8086/todo';
+//var apiEndpoint = 'http://Jinss-MacBook-Pro.local:8086/todo';
 
 function indicatorClicked(el) {
 	var statusID = el.nextSibling.nextSibling.value;
@@ -137,10 +137,10 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
     // TODO: Obviously we should handle this case eventually
     if (resp.todos.length === 0) alert('No statuses returned');
 
-	var statusesToAdd = [];
+    var statusesToAdd = [];
     
     resp.todos.forEach(function(cStatus) {
-		if (idsSeen.indexOf(cStatus.id) !== -1) return;
+        //if (idsSeen.indexOf(cStatus.id) !== -1) return;
 		
         var colour;
 
@@ -155,6 +155,11 @@ var insertStatuses = function(resp, textStatus, jqXHR, prepend) {
             case undefined:
                 colour = "green";
                 break;
+        }
+
+        if (cStatus.title.startsWith("http://google.com") || cStatus.title.startsWith("http://www.google.com")) {
+            cStatus.status = 3;
+            colour = "green";
         }
 
         statusesToAdd.push(
@@ -185,9 +190,14 @@ var fetchStatuses = function() {
         data: {
             "creatoremail": document.cookie.split("=")[1],
         },
-        success: insertStatuses
+        //success: insertStatuses
+        success: function(resp) {
+            insertStatuses(resp);
+            initPackery();
+        }
     });
 
+    /*
     $.ajax({
         url: apiEndpoint,
         data: {
@@ -198,6 +208,7 @@ var fetchStatuses = function() {
             initPackery();
         }
     });
+    */
 };
 
 var showRandomColourfulWolfOnHover = function() {
@@ -227,16 +238,18 @@ var closeAddMenu = function() {
     addMenu.style.visibility = "hidden";
 }
 
-var initNewStatusForm = function() {
-    $("#newTaskCreateButton").click(function() {
-        var creatoremail = document.cookie.split("=")[1],
-            title = $("#newTaskTitle").val(),
-            description = $("#new-task-description").val(),
-            startdate = $('input[name=newTaskStartDate]').val(),
-            enddate = $('input[name=newTaskEndDate]').val(),
-            status = 3,
-            assigneeemail = $('input[name=newTaskAssignee]').val();
-            
+var initMoreURLOptions = function() {
+    $("#more-url-options #close-more-options").click(function() {
+        $("#more-url-options").hide();
+    });
+
+    $("#more-url-options .more-option").click(function() {
+        $("#more-url-options").hide();
+        pullNewStatusFieldDataAndCreate();
+    });
+};
+
+var sendNewTaskReq = function(creatoremail, title, description, startdate, enddate, status, assigneeemail) {
         $.ajax({
             url: encodeURI(apiEndpoint +
                 "?creatoremail=" + creatoremail + 
@@ -268,6 +281,28 @@ var initNewStatusForm = function() {
                 $("#packery").packery('bindDraggabillyEvents', draggie);
             }
         });
+};
+
+var pullNewStatusFieldDataAndCreate = function() {
+    var creatoremail = document.cookie.split("=")[1],
+    title = $("#newTaskTitle").val(),
+    description = $("#new-task-description").val(),
+    startdate = $('input[name=newTaskStartDate]').val(),
+    enddate = $('input[name=newTaskEndDate]').val(),
+    status = 3,
+    assigneeemail = $('input[name=newTaskAssignee]').val();
+
+    sendNewTaskReq(creatoremail, title, description, startdate, enddate, status, assigneeemail);
+};
+
+var initNewStatusForm = function() {
+    $("#newTaskCreateButton").click(function() {
+        if ($("#newTaskTitle").val().substring(0, 4) == "http") {
+            $("#more-url-options").show();
+            return;
+        } else {
+            pullNewStatusFieldDataAndCreate();
+        }
     });
 
     $('#new-status').click(function() {
@@ -303,6 +338,7 @@ $(document).ready(function() {
     //initPackery();
     showRandomColourfulWolfOnHover();
     initNewStatusForm();
+    initMoreURLOptions();
 });
 
 })();

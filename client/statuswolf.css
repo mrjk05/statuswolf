@@ -110,8 +110,44 @@ button {
     position: absolute;
     top: 4%;
     left: 25%;
+    background-color: #fcf3f0;
+    padding: .5em;
+    z-index: 9999999999;
+}
+
+#more-url-options #close-more-options {
+    text-align:right;
+    position: absolute;
+    top: -.4em;
+    right: -.4em;
     background-color: white;
-    border: 2px solid #333;
+    border-radius: 100%;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 1.5em;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    padding-top: .6em;
+    cursor: pointer;
+}
+
+#more-url-options .more-option:last-of-type {
+    margin-bottom: 0;
+}
+
+#more-url-options .more-option:hover {
+    background-color: #C03939;
+}
+
+#more-url-options .more-option {
+    cursor: pointer;
+    text-align: center;
+    padding: 1.5em 1em;
+    margin-bottom: .4em;
+    font-size: 1.5rem;
+    background-color: #CC4040;
+    color: white;
 }
 
 .status {
